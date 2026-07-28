@@ -5,10 +5,12 @@ description: Turns a person's brain dump into their finished CLAUDE.md and goals
 
 # Perfect CLAUDE.md
 
-Two files come out of this:
+Two files come out of this, both living in `~/Desktop/Projects/System Prompts/`:
 
-- `~/.claude/CLAUDE.md` — who they are and how you work with them. Claude reads it every session.
-- `<workspace>/goals.md` — the north star, the bets, and the why behind each one. Written as prose. A morning brief or a daily agent reads it to know what matters today.
+- `CLAUDE.md`: who they are and how you work with them. Claude reads it every session.
+- `goals.md`: the north star, the bets, and the why behind each one. Written as prose. A morning brief or a daily agent reads it to know what matters today.
+
+Claude Code only loads the copy at `~/.claude/CLAUDE.md`, so the skill writes the real file in System Prompts and puts a symlink at `~/.claude/CLAUDE.md` pointing to it. A symlink is one file visible from two places: the person edits it in Finder like a normal document, and Claude still picks it up every session. Never make two separate copies; they drift apart within a week.
 
 They are different jobs. CLAUDE.md is standing instructions. goals.md is current direction and changes as the direction changes. Do not merge them.
 
@@ -49,7 +51,13 @@ Ask about everything missing in **one batch**, numbered, in plain language. Not 
 
 Use the template at the bottom. Fill every `{{PLACEHOLDER}}`. Swap the he/him wording for their pronouns throughout and fix the grammar so it reads right. Leave every other section exactly as written. Do not add sections or remove them.
 
-Save to `~/.claude/CLAUDE.md`. If a file is already there, show them what is there and ask before overwriting.
+Save it like this:
+
+1. `mkdir -p ~/Desktop/Projects/"System Prompts"`
+2. Write the file to `~/Desktop/Projects/System Prompts/CLAUDE.md`.
+3. If `~/.claude/CLAUDE.md` already exists, show them what is there and ask before touching it.
+4. Link it: `ln -sf ~/Desktop/Projects/"System Prompts"/CLAUDE.md ~/.claude/CLAUDE.md`
+5. Prove the link works: `readlink ~/.claude/CLAUDE.md` should print the System Prompts path, and `head -1 ~/.claude/CLAUDE.md` should show the file's first line.
 
 ### 4. Write goals.md
 
@@ -61,7 +69,7 @@ Cover:
 - What must never slip, even in a bad week
 - How they want to be worked with
 
-Write it in their own words wherever you can. Save it to their workspace root (`~/Desktop/Claude/goals.md` unless they keep files somewhere else).
+Write it in their own words wherever you can. Save it to `~/Desktop/Projects/System Prompts/goals.md`. No symlink needed for this one; anything that wants it reads it from there.
 
 ### 5. Read both back
 
@@ -173,8 +181,7 @@ don't list those. If there are none yet, write "None yet."}}
 
 ## File Organization
 
-Everything lives at `{{WORKSPACE, default ~/Desktop/Claude}}`. Keep it tidy. Projects
-go in `{{WORKSPACE}}/Projects`, one folder per project.
+Everything lives at `~/Desktop/Projects`, one folder per project. Keep it tidy.
 
 Every project folder needs a `STATUS.md` covering the north-star goal,
 project-specific rules to carry across sessions, what's done, and what's next. Read it
@@ -182,8 +189,8 @@ before starting work and update it as the project moves. If a project has no STA
 don't start work yet: nail the north-star goal with {{NAME}} first, write it down, then
 begin.
 
-His goals live at `{{WORKSPACE}}/goals.md`. Read it when the work touches direction or
-priorities.
+This file and his goals live in `~/Desktop/Projects/System Prompts/`. Read `goals.md`
+when the work touches direction or priorities, and keep both files current there.
 
 ## Rules Learned
 

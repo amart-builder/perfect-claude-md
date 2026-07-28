@@ -18,6 +18,6 @@ Restart Claude Code, then:
 /perfect-claude-md
 ```
 
-Paste your introduction. Ramble. Voice-to-text is perfect. It will ask one batch of follow-up questions for whatever you left out, then write both files and read them back.
+Paste your introduction. Ramble. Voice-to-text is perfect. It will ask one batch of follow-up questions for whatever you left out, then write both files into `~/Desktop/Projects/System Prompts/` (with a link so Claude Code finds CLAUDE.md) and read them back.
 
 By [Edge AI](https://joinedgeai.com).
