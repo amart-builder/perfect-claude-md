@@ -5,12 +5,12 @@ description: Turns a person's brain dump into their finished CLAUDE.md and goals
 
 # Perfect CLAUDE.md
 
-Two files come out of this, both living in `~/Desktop/Projects/System Prompts/`:
+Two files come out of this. The real files live in `~/.claude/`, and editable links to them live in `~/Desktop/Projects/System Prompts/`:
 
 - `CLAUDE.md`: who they are and how you work with them. Claude reads it every session.
 - `goals.md`: the north star, the bets, and the why behind each one. Written as prose. A morning brief or a daily agent reads it to know what matters today.
 
-Claude Code only loads the copy at `~/.claude/CLAUDE.md`, so the skill writes the real file in System Prompts and puts a symlink at `~/.claude/CLAUDE.md` pointing to it. A symlink is one file visible from two places: the person edits it in Finder like a normal document, and Claude still picks it up every session. Never make two separate copies; they drift apart within a week.
+Why that direction: Claude Code only loads `~/.claude/CLAUDE.md`, and macOS treats Desktop as a protected folder, so background jobs (launchd agents, schedulers) reading a file that physically lives under Desktop fail silently. The real files therefore live in `~/.claude/`, and the System Prompts folder holds symlinks. A symlink is one file visible from two places: the person edits it in Finder like a normal document, and every tool reads the same real file. Never make two separate copies; they drift apart within a week.
 
 They are different jobs. CLAUDE.md is standing instructions. goals.md is current direction and changes as the direction changes. Do not merge them.
 
@@ -53,11 +53,11 @@ Use the template at the bottom. Fill every `{{PLACEHOLDER}}`. Swap the he/him wo
 
 Save it like this:
 
-1. `mkdir -p ~/Desktop/Projects/"System Prompts"`
-2. Write the file to `~/Desktop/Projects/System Prompts/CLAUDE.md`.
-3. If `~/.claude/CLAUDE.md` already exists, show them what is there and ask before touching it.
-4. Link it: `ln -sf ~/Desktop/Projects/"System Prompts"/CLAUDE.md ~/.claude/CLAUDE.md`
-5. Prove the link works: `readlink ~/.claude/CLAUDE.md` should print the System Prompts path, and `head -1 ~/.claude/CLAUDE.md` should show the file's first line.
+1. If `~/.claude/CLAUDE.md` already exists, show them what is there and ask before touching it.
+2. Write the real file to `~/.claude/CLAUDE.md`.
+3. `mkdir -p ~/Desktop/Projects/"System Prompts"`
+4. Link it for Finder editing: `ln -sf ~/.claude/CLAUDE.md ~/Desktop/Projects/"System Prompts"/CLAUDE.md`
+5. Prove it: `readlink ~/Desktop/Projects/"System Prompts"/CLAUDE.md` prints `~/.claude/CLAUDE.md` expanded, and `head -1` on both paths shows the same first line.
 
 ### 4. Write goals.md
 
@@ -69,7 +69,7 @@ Cover:
 - What must never slip, even in a bad week
 - How they want to be worked with
 
-Write it in their own words wherever you can. Save it to `~/Desktop/Projects/System Prompts/goals.md`. No symlink needed for this one; anything that wants it reads it from there.
+Write it in their own words wherever you can. Save the real file to `~/.claude/goals.md`, then link it the same way: `ln -sf ~/.claude/goals.md ~/Desktop/Projects/"System Prompts"/goals.md`. Anything scheduled (a morning brief, a daily agent) reads `~/.claude/goals.md`; the person edits either path, it is one file.
 
 ### 5. Read both back
 
